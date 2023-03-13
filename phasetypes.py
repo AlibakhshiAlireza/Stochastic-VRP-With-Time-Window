@@ -81,5 +81,5 @@ TravelTimeDist = phase(D=traveld, pi=travelpi)
 ServiceTimeDist = phase(D=servisD, pi=Servispi)
 
 
-[alpha,A]=TravelTimeDist.pi,TravelTimeDist.D;
-ImageFromPH(alpha, A, "Traveltimedist.pdf")
+
+print(TravelTimeDist.GreaterThan(5500))
