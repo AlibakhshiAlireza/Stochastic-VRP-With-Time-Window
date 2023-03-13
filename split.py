@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from itertools import combinations
 from utils import *
+from phasetypes import *
 TW = {2:[25,40],4:[40,90],1:[60,95],5:[30,60],3:[35,85],0:[0,160]}
 tt = np.array([[0,20,25,25,30,15],[20,0,0,0,0,20],[25,0,0,0,20,0],[25,0,0,0,0,0],[30,20,0,0,0,0],[15,0,0,20,0,0]])
 servicecost = [0,20,20,20,20,20]
