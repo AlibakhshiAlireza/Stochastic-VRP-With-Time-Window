@@ -49,18 +49,11 @@ def NurseCons(zeroindexes, nurses, testcase):
     return a
 
 
-nurses = 2
+
 testcase = [0,2,4,0,1,0,5,3,0]
 
-def NurseCons(zeroindexes, nurses, testcase):
-    zero_indexes = zeroindexes(testcase)
-    if len(zero_indexes) > nurses:
-        a = False
-    else:
-        a = True
-    return a
-
-z = NurseCons(zeroindexes, nurses, testcase)
+for i in testcase:
+    
 
 print(z)
 
