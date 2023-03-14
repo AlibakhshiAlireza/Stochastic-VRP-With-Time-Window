@@ -81,7 +81,12 @@ traveld = np.matrix([[-0.00169855,  0.00169855,  0.        ,  0.        ,  0.   
 
 TravelTimeDist = phase(D=traveld, pi=travelpi)
 ServiceTimeDist = phase(D=servisD, pi=Servispi)
+for i in range(TravelTimeDist.D.shape[1]):
+  num = float((TravelTimeDist.D[i,:].sum()))
+  if i == 0:
+    d1 = np.matrix([num])
+  else:
+    d1 = np.concatenate((d1, np.matrix([num])), axis=0)
 
 
-print(TravelTimeDist.D.shape[1])
-
+print((d1*ServiceTimeDist.pi).shape)
