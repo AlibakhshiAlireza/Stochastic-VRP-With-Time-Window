@@ -77,9 +77,11 @@ traveld = np.matrix([[-0.00169855,  0.00169855,  0.        ,  0.        ,  0.   
           0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
          -0.00215452]])
 
+
+
 TravelTimeDist = phase(D=traveld, pi=travelpi)
 ServiceTimeDist = phase(D=servisD, pi=Servispi)
 
 
+print(TravelTimeDist.D.shape[1])
 
-print(TravelTimeDist.GreaterThan(5500))
