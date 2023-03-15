@@ -89,4 +89,4 @@ for i in range(TravelTimeDist.D.shape[1]):
     d1 = np.concatenate((d1, np.matrix([num])), axis=0)
 
 
-print((d1*ServiceTimeDist.pi).shape)
+print(TravelTimeDist.GreaterThan(2000))
