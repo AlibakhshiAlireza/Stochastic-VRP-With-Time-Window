@@ -46,7 +46,21 @@ class phaseconvo():
         Conv = [self.First, self.Second]
         new = (1 - np.round(Conv[0].pi.sum(),2))*Conv[1].pi
         matnew = np.hstack((Conv[0].pi,new))
-        return matnew
+        return np.asmatrix(matnew)
+    def D(self):
+        #first create empty matrix
+        cornerd = np.zeros((self.First.D.shape[1] +self.Second.D.shape[1] , self.First.D.shape[1] +self.Second.D.shape[1] ))
+        #d1*pi 
+        first = self.First.di() * self.Second.pi
+        #replacement of first
+        cornerd[0:self.First.D.shape[0],0:self.First.D.shape[1]] = self.First.D
+        sec = self.First.di() * self.Second.pi
+        cornerd[0:sec.shape[0],self.First.D.shape[0]:] = sec
+        cornerd[sec.shape[0]:,(cornerd.shape[1] - self.Second.D.shape[1]):] = self.Second.D
+        return np.asmatrix(cornerd)
+    
+    def Dist(self):
+        return phase(D=self.D(), pi=self.pi())
     
     
 if __name__ == "__main__" :
