@@ -1,6 +1,7 @@
 import sys
 import matplotlib as plt
 sys.path.append('butools2/Python')
+sys.path.append('MPMAVRPMain/butools2/Python')
 from butools.ph import *
 import numpy as np
 a = np.matrix([[0.1,0.9,0]])
@@ -25,9 +26,10 @@ class phase():
         a = [x]
         b = [y]
         return self.GreaterThan(a) - self.GreaterThan(b)
-    def d1(self):
+    
+    def di(self):
         for i in range(self.D.shape[1]):
-            num = float((self.D[i,:].sum()))
+            num = -float((self.D[i,:].sum())) + 0.0
             if i == 0:
                 d1 = np.matrix([num])
             else:
@@ -51,4 +53,4 @@ if __name__ == "__main__" :
     pi = np.matrix([[0.1,0.9,0]])
     D = np.matrix([[-6.2, 2, 0],[2, -9, 1],[1, 0, -3]])
     ph = phase(D=D, pi=pi)
-    print(ph.GreaterThan(1))
+    print(ph.di())
