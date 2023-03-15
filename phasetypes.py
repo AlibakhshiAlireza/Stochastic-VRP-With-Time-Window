@@ -84,6 +84,7 @@ ServiceTimeDist = phase(D=servisD, pi=Servispi)
 
 new = phase(D=phaseconvo(TravelTimeDist, ServiceTimeDist).D(),pi=phaseconvo(TravelTimeDist, ServiceTimeDist).pi())
 secnew = phaseconvo(TravelTimeDist, new).Dist()
-print(secnew.GreaterThan(7000))
+scnn = phaseconvo(TravelTimeDist, secnew).Dist()
+print(scnn.GreaterThan(7000))
 
 
