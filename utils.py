@@ -50,12 +50,7 @@ def NurseCons(zeroindexes, nurses, testcase):
 
 
 
-testcase = [0,2,4,0,1,0,5,3,0]
 
-for i in testcase:
-    
-
-print(z)
 
 
 
