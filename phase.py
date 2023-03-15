@@ -25,6 +25,15 @@ class phase():
         a = [x]
         b = [y]
         return self.GreaterThan(a) - self.GreaterThan(b)
+    def d1(self):
+        for i in range(self.D.shape[1]):
+            num = float((self.D[i,:].sum()))
+            if i == 0:
+                d1 = np.matrix([num])
+            else:
+                d1 = np.concatenate((d1, np.matrix([num])), axis=0)
+        return d1
+
     
 class phaseconvo():
     def __init__(self, First , Second):
