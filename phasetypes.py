@@ -81,14 +81,9 @@ traveld = np.matrix([[-0.00169855,  0.00169855,  0.        ,  0.        ,  0.   
 
 TravelTimeDist = phase(D=traveld, pi=travelpi)
 ServiceTimeDist = phase(D=servisD, pi=Servispi)
-#first create empty matrix
-cornerd = np.zeros((TravelTimeDist.D.shape[1] +TravelTimeDist.D.shape[1] , TravelTimeDist.D.shape[1] +TravelTimeDist.D.shape[1] ))
-#d1*pi 
 
-first = TravelTimeDist.di() * ServiceTimeDist.pi
-#replacement of first
-cornerd[0:TravelTimeDist.D.shape[0],0:TravelTimeDist.D.shape[1]] = TravelTimeDist.D
-sec = TravelTimeDist.di() * ServiceTimeDist.pi
-cornerd[0:sec.shape[0],TravelTimeDist.D.shape[0]:] = ServiceTimeDist.D
-cornerd[sec.shape[0]:,(cornerd.shape[1] - ServiceTimeDist.D.shape[1]):] = ServiceTimeDist.D
-print(cornerd.shape)
+new = phase(D=phaseconvo(TravelTimeDist, ServiceTimeDist).D(),pi=phaseconvo(TravelTimeDist, ServiceTimeDist).pi())
+
+print(new.)
+
+
