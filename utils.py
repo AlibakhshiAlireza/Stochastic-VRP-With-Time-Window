@@ -100,14 +100,22 @@ def Splitfunc(completeroute,zero_indexes):
             ################ here will be a feasibility check and cost calculation
         steps = steps + 1
 
+
+
 test = [0,1,2,0,3,4,5,0,6,0,7,8,9,10,0]
-costm = rcord('A7')
-TW = reader('A7')[3]
+costm = matcord(rcord('A7'))
+TW = reader('A7')[2]
 time = 0
 for index,i in enumerate(test):
     if index == 0:
-        time = time + TravelTimeDist.sample()
+        nxtstep = test[index+1]
+        crj = costm[i,test[index+1]]
+        resourcecost = (TravelTimeDist.GreaterThan(TW[nxtstep][1]))*(2*costm[0,nxtstep])
+        time = time + TravelTimeDist.sample() + ServiceTimeDist.sample()
     else:
+        nxtstep = test[index+1]
+        crj = crj + costm[i,test[index+1]]
+        resourcecost = resourcecost + (TravelTimeDist.GreaterThan(TW[nxtstep][1]))*(2*costm[0,nxtstep])
         time = time + ServiceTimeDist.sample() + TravelTimeDist.sample()
 
-print(TW)
+print(resourcecost)
