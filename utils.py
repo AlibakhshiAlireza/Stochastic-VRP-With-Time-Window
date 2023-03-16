@@ -18,7 +18,8 @@ def zeroindexes(x):
     return zero_indexes
 
 
-
+def costmatrix(cord):
+    return 0
 
 
 
