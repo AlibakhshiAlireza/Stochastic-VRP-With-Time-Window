@@ -22,7 +22,6 @@ def rcord(instance):
             cords.append((float(i.split(' ')[0]),float(i.split(' ')[1])))
     return cords
 
-
 def matcord(cord):
     mx = np.zeros((len(cord) - 1,len(cord)- 1))
     for i in range(len(cord) - 1):
