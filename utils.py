@@ -100,17 +100,13 @@ def Splitfunc(completeroute,zero_indexes):
             ################ here will be a feasibility check and cost calculation
         steps = steps + 1
 
+print(SamplesFromPH(ServiceTimeDist.pi,ServiceTimeDist.D,1))
+"""test = [0,1,2,0,3,4,5,0,6,0,7,8,9,10,0]
+time = 0
+for index,i in enumerate(test):
+    if index == 0:
+        time = time + TravelTimeDist.sample()
+    else:
+        time = time + ServiceTimeDist.sample() + TravelTimeDist.sample()
 
-
-nurses,patients,TW = reader("A7")
-print(patients)
-lst = list(range(1, int(patients)+1))
-random.shuffle(lst)
-lst = interleave_zeros(lst)
-zero_indexes = zeroindexes(lst)
-lcombinations = list(combinations(zero_indexes, 9))
-o = list(lcombinations[0])
-my_list = [lst[y] for y in range(len(lst)) if y not in o]
-print(my_list)
-g = feasibility(my_list,TW,nurses)
-print(g)
+print(time)"""

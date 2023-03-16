@@ -82,8 +82,8 @@ traveld = np.matrix([[-0.00169855,  0.00169855,  0.        ,  0.        ,  0.   
 TravelTimeDist = phase(D=traveld, pi=travelpi)
 ServiceTimeDist = phase(D=servisD, pi=Servispi)
 
-t = phaseconvo(TravelTimeDist, ServiceTimeDist).Dist()
-y = phaseconvo(t, TravelTimeDist).Dist()
-print(y.LessThan(36000))
-
-
+new = phase(D=phaseconvo(TravelTimeDist, ServiceTimeDist).D(),pi=phaseconvo(TravelTimeDist, ServiceTimeDist).pi())
+secnew = phaseconvo(TravelTimeDist, new).Dist()
+print(secnew.GreaterThan(7000))
+scnn = phaseconvo(TravelTimeDist, secnew).Dist()
+print(scnn.GreaterThan(7000))

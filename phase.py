@@ -35,6 +35,9 @@ class phase():
             else:
                 d1 = np.concatenate((d1, np.matrix([num])), axis=0)
         return d1
+    def sample(self):
+        a = SamplesFromPH(self.pi,self.D,1)
+        return a[0]
 
     
 class phaseconvo():
