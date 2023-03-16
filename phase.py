@@ -66,8 +66,3 @@ class phaseconvo():
         return phase(D=self.D(), pi=self.pi())
     
     
-if __name__ == "__main__" :
-    pi = np.matrix([[0.1,0.9,0]])
-    D = np.matrix([[-6.2, 2, 0],[2, -9, 1],[1, 0, -3]])
-    ph = phase(D=D, pi=pi)
-    print(ph.di())

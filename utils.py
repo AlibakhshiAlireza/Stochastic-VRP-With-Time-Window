@@ -100,7 +100,7 @@ def Splitfunc(completeroute,zero_indexes):
             ################ here will be a feasibility check and cost calculation
         steps = steps + 1
 
-print(SamplesFromPH(ServiceTimeDist.pi,ServiceTimeDist.D,1))
+print(ServiceTimeDist.sample())
 """test = [0,1,2,0,3,4,5,0,6,0,7,8,9,10,0]
 time = 0
 for index,i in enumerate(test):
