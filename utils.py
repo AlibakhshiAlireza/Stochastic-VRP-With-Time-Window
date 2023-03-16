@@ -69,7 +69,7 @@ def feasibility(TestCase, TW, nurses):
         else:
             cfeas = True
 #complete route
-    if np.prod(probs) < 0.95:
+    if np.prod(probs) < 0.90:
         pfeas = False
     else:
         pfeas = True
