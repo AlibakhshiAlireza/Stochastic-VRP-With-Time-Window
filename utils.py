@@ -101,9 +101,13 @@ def Splitfunc(completeroute,zero_indexes):
         steps = steps + 1
 
 test = [0,1,2,0,3,4,5,0,6,0,7,8,9,10,0]
+costm = rcord('A7')
+TW = reader('A7')[3]
 time = 0
 for index,i in enumerate(test):
     if index == 0:
         time = time + TravelTimeDist.sample()
     else:
         time = time + ServiceTimeDist.sample() + TravelTimeDist.sample()
+
+print(TW)
