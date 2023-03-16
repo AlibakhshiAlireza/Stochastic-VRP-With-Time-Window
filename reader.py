@@ -3,11 +3,14 @@ import sys
 
 sys.path.append('MPMAVRPMain/Problem')
 sys.path.append('Problem')
-with open('MPMAVRPMain/Problem/A7.txt') as f:
-   nurses = int(f.readline(1))
-   patients = int(f.readline(2))
-   TW = {}
-   for i in range(patients):
-    TW[i+3] = f.readline(i+3).split("\n")
-
+TW = {}
+with open('Problem/A7.txt') as f:
+    contents = f.readlines()
+    nurses = contents[0].split(' ')[0]
+    patients = contents[1].split(' ')[0]
+    TW[0] = [contents[2].split(' ')[0],contents[2].split(' ')[1][:-2]]
+    for index,i in enumerate(contents[3:],start=1):
+        TW[index] = [int(i.split(' ')[0]),int(i.split(' ')[1])]
+   
 print(TW)
+
