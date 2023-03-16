@@ -1,6 +1,8 @@
 from itertools import combinations
 from phase import *
 from phasetypes import *
+from reader import *
+import random
 
 def interleave_zeros(lst):
     new_list = []
@@ -19,22 +21,6 @@ def zeroindexes(x):
 
 
 
-
-def Splitfunc(completeroute,zero_indexes):
-    """
-    x = permutation  list
-    y = interleave_zeros(x) list
-    """
-    steps = 1
-    while steps <= len(zero_indexes) :
-        lcombinations = list(combinations(zero_indexes, steps))
-        for i in lcombinations:
-            temp = completeroute.copy()
-            o = list(i)
-        #delete o as index from temp
-            my_list = [temp[y] for y in range(len(temp)) if y not in i]
-            ################ here will be a feasibility check and cost calculation
-        steps = steps + 1
 
 def NurseCons(testcase,nurses):
     zero_indexes = zeroindexes(testcase)
@@ -78,19 +64,52 @@ def feasibility(TestCase, TW, nurses):
     for i in prob:
         if any(x < 0.95 for x in i[:-1]):
             cfeas = False
+            break
         else:
             cfeas = True
 #complete route
-    if np.prod(p) < 0.95:
+    if np.prod(probs) < 0.95:
         pfeas = False
     else:
         pfeas = True
     ncon = NurseCons(TestCase,nurses)
     feaslist = [dfeas,cfeas,pfeas,ncon]
-    print(prob,p,probs)
+    print("List : ",prob)
+    print("Prob : ",probs)
+    print("p :",p)
     print(feaslist)
     if any(x == False for x in feaslist):
         return False
     else:
         return True
 
+def Splitfunc(completeroute,zero_indexes):
+    """
+    x = permutation  list
+    y = interleave_zeros(x) list
+    """
+    steps = 1
+    while steps <= len(zero_indexes) :
+        lcombinations = list(combinations(zero_indexes, steps))
+        for i in lcombinations:
+            temp = completeroute.copy()
+            o = list(i)
+            #delete o as index from temp
+            my_list = [temp[y] for y in range(len(temp)) if y not in i]
+            ################ here will be a feasibility check and cost calculation
+        steps = steps + 1
+
+
+
+nurses,patients,TW = reader("A7")
+print(patients)
+lst = list(range(1, int(patients)+1))
+random.shuffle(lst)
+lst = interleave_zeros(lst)
+zero_indexes = zeroindexes(lst)
+lcombinations = list(combinations(zero_indexes, 6))
+o = list(lcombinations[4])
+my_list = [lst[y] for y in range(len(lst)) if y not in o]
+print(my_list)
+g = feasibility(my_list,TW,nurses)
+print(g)
