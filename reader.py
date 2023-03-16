@@ -30,6 +30,4 @@ def matcord(cord):
             mx[i][j] = np.sqrt((cord[i][0]-cord[j][0])**2+(cord[i][1]-cord[j][1])**2)
     return mx
 
-print(matcord(rcord('A7')))
-
 
