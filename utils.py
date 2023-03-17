@@ -38,7 +38,6 @@ def feasibility(TestCase, TW, nurses):
     prob = []
     start = 0
     p = 1
-    print(f)
     for i in f:
         temp = []
         for j in TestCase[start:i]:
@@ -75,7 +74,7 @@ def feasibility(TestCase, TW, nurses):
         pfeas = True
     ncon = NurseCons(TestCase,nurses)
     feaslist = [dfeas,cfeas,pfeas,ncon]
-    print(feaslist)
+    #print(feaslist)
     if any(x == False for x in feaslist):
         return False
     else:
@@ -134,13 +133,14 @@ def CostFunc(TW, Costmat, my_list):
         Time.append(time)
     return sum(TotalCost),sum(TotalResourceCost)
 
-def Splitfunc(completeroute,zero_indexes):
+def Splitfunc(completeroute,zero_indexes,TW,nurses,costmat):
     """
     x = permutation  list
     y = interleave_zeros(x) list
     incomplete
     """
     steps = 1
+    Vi = np.inf
     while steps <= len(zero_indexes) :
         lcombinations = list(combinations(zero_indexes, steps))
         for i in lcombinations:
@@ -149,6 +149,18 @@ def Splitfunc(completeroute,zero_indexes):
             #delete o as index from temp
             my_list = [temp[y] for y in range(len(temp)) if y not in i]
             ################ here will be a feasibility check and cost calculation
+            if feasibility(my_list, TW, nurses) == True:
+                tc,rc = CostFunc(TW, costmat, my_list)
+                if rc + tc < Vi:
+                    Vi = tc + rc
+                    best = my_list
+                    print(Vi)
+                    print(best)
+                else:
+                    pass
+            else:
+                pass
         steps = steps + 1
+    return best,Vi
 
 

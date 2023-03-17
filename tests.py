@@ -13,16 +13,9 @@ nurses,patients,TW = reader('A7')
 Costmat = matcord(rcord('A7'))
 #OBJ = M + \Sigma cr + \resourcecost
 a = list(range(1,patients+1))
-steps = 6
 shuffle(a)
 a = interleave_zeros(a)
 zero_indexes = zeroindexes(a)
-lcombinations = list(combinations(zero_indexes, steps))
-my_list = [a[y] for y in range(len(a)) if y not in lcombinations[3]]
-TotalCost, TotalResourceCost = CostFunc(TW, Costmat, my_list)
-print(Costmat)
-print(TotalCost)
-print(TotalResourceCost)
-print(feasibility(my_list,TW,nurses))
+print(Splitfunc(a,zero_indexes,TW,nurses,Costmat))
 
 
