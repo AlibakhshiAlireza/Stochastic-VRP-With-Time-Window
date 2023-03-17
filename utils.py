@@ -3,6 +3,7 @@ from phase import *
 from phasetypes import *
 from reader import *
 import random
+from tqdm import tqdm
 
 def interleave_zeros(lst):
     new_list = []
@@ -25,7 +26,7 @@ def costmatrix(cord):
 
 def NurseCons(testcase,nurses):
     zero_indexes = zeroindexes(testcase)
-    if len(zero_indexes) > nurses:
+    if len(zero_indexes) + 1 > nurses:
         a = False
     else:
         a = True
@@ -139,11 +140,13 @@ def Splitfunc(completeroute,zero_indexes,TW,nurses,costmat):
     y = interleave_zeros(x) list
     incomplete
     """
-    steps = 1
+    st = len(zero_indexes) - nurses
+    steps = st
     Vi = np.inf
+    best = None
     while steps <= len(zero_indexes) :
         lcombinations = list(combinations(zero_indexes, steps))
-        for i in lcombinations:
+        for i in tqdm(lcombinations,ascii="+-+="):
             temp = completeroute.copy()
             o = list(i)
             #delete o as index from temp
@@ -154,8 +157,6 @@ def Splitfunc(completeroute,zero_indexes,TW,nurses,costmat):
                 if rc + tc < Vi:
                     Vi = tc + rc
                     best = my_list
-                    print(Vi)
-                    print(best)
                 else:
                     pass
             else:
