@@ -141,7 +141,7 @@ def Splitfunc(completeroute,zero_indexes,TW,nurses,costmat):
     incomplete
     """
     st = len(zero_indexes) - nurses
-    steps = st
+    steps = st + 1
     Vi = np.inf
     best = None
     while steps <= len(zero_indexes) :
