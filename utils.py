@@ -75,9 +75,6 @@ def feasibility(TestCase, TW, nurses):
         pfeas = True
     ncon = NurseCons(TestCase,nurses)
     feaslist = [dfeas,cfeas,pfeas,ncon]
-    print("List : ",prob)
-    print("Prob : ",probs)
-    print("p :",p)
     print(feaslist)
     if any(x == False for x in feaslist):
         return False
@@ -103,8 +100,17 @@ def CostFunc(TW, Costmat, my_list):
         for index,j in enumerate(i):
             if index == 0:
                 cost += Costmat[0,i[index+1]]
-                resourcecost = (TravelTimeDist.GreaterThan(TW[i[index+1]][1])*2*(Costmat[0][i[index+1]]))
-                time += TravelTimeDist.sample() + ServiceTimeDist.sample()
+                lop = TW[i[index+1]][1] - time
+                if lop <= 0:
+                    resourcecost += 2*Costmat[0][i[index+1]]
+                else:
+                    resourcecost += TravelTimeDist.GreaterThan(lop)*2*Costmat[0][i[index+1]]
+                time += TravelTimeDist.sample()
+                if time < TW[i[index+1]][0]:
+                    time = TW[i[index+1]][0]
+                else:
+                    pass
+                time += ServiceTimeDist.sample()
             elif index == len(i)-1:
                 pass
             elif index == len(i)-2:
@@ -112,12 +118,21 @@ def CostFunc(TW, Costmat, my_list):
                 time += TravelTimeDist.sample()
             else:
                 cost += Costmat[j,i[index+1]]
-                resourcecost += (TravelTimeDist.GreaterThan(TW[i[index+1]][1] - time)*2*(Costmat[j][i[index+1]]))
-                time += TravelTimeDist.sample() + ServiceTimeDist.sample()
+                lop = TW[i[index+1]][1] - time
+                if lop <= 0:
+                    resourcecost += 2*Costmat[0][i[index+1]]
+                else:
+                    resourcecost += TravelTimeDist.GreaterThan(lop)*2*Costmat[0][i[index+1]]
+                time += TravelTimeDist.sample()
+                if time < TW[i[index+1]][0]:
+                    time = TW[i[index+1]][0]
+                else:
+                    pass
+                time += ServiceTimeDist.sample()
         TotalCost.append(cost)
         TotalResourceCost.append(resourcecost)
         Time.append(time)
-    return routelist,TotalCost,TotalResourceCost
+    return sum(TotalCost),sum(TotalResourceCost)
 
 def Splitfunc(completeroute,zero_indexes):
     """
