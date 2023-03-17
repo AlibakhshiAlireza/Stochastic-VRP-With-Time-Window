@@ -84,6 +84,41 @@ def feasibility(TestCase, TW, nurses):
     else:
         return True
 
+
+def CostFunc(TW, Costmat, my_list):
+    routelist = []
+    temp = zeroindexes(my_list)
+    temp.append(len(my_list) - 1)
+    start = 0
+    for i in temp:
+        routelist.append(my_list[start:i+1])
+        start = i
+    TotalCost = []
+    TotalResourceCost = []
+    Time = []
+    for i in routelist:
+        time = 0
+        cost = 0
+        resourcecost = 0
+        for index,j in enumerate(i):
+            if index == 0:
+                cost += Costmat[0,i[index+1]]
+                resourcecost = (TravelTimeDist.GreaterThan(TW[i[index+1]][1])*2*(Costmat[0][i[index+1]]))
+                time += TravelTimeDist.sample() + ServiceTimeDist.sample()
+            elif index == len(i)-1:
+                pass
+            elif index == len(i)-2:
+                cost += Costmat[0,j]
+                time += TravelTimeDist.sample()
+            else:
+                cost += Costmat[j,i[index+1]]
+                resourcecost += (TravelTimeDist.GreaterThan(TW[i[index+1]][1] - time)*2*(Costmat[j][i[index+1]]))
+                time += TravelTimeDist.sample() + ServiceTimeDist.sample()
+        TotalCost.append(cost)
+        TotalResourceCost.append(resourcecost)
+        Time.append(time)
+    return routelist,TotalCost,TotalResourceCost
+
 def Splitfunc(completeroute,zero_indexes):
     """
     x = permutation  list
