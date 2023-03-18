@@ -63,6 +63,11 @@ class phaseconvo():
         return np.asmatrix(cornerd)
     
     def Dist(self):
-        return phase(D=self.D(), pi=self.pi())
+        if self.First == None:
+            return self.Second
+        elif self.Second == None:
+            return self.First
+        else:
+            return phase(D=self.D(), pi=self.pi())
     
     

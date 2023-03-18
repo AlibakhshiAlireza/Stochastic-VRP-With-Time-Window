@@ -146,7 +146,8 @@ def Splitfunc(completeroute,zero_indexes,TW,nurses,costmat):
     best = None
     while steps <= len(zero_indexes) :
         lcombinations = list(combinations(zero_indexes, steps))
-        for i in tqdm(lcombinations,ascii="+-+="):
+        print("1")
+        for i in lcombinations:
             temp = completeroute.copy()
             o = list(i)
             #delete o as index from temp
