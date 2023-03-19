@@ -10,13 +10,15 @@ from butools.ph import *
 from butools.fitting import *
 import time
 import math
-nurses,patients,TW = reader('A7')
-Costmat = matcord(rcord('A7'))
+nurses,patients,TW = reader('C7')
+Costmat = matcord(rcord('C7'))
 starttimer = time.time()
 permutation = list(range(1,patients+1))
 shuffle(permutation)
-splits = Split('A7',permutation=permutation)
+splits = Split('C7',permutation=permutation)
+print(splits[2])
 a = Feasibility(nurses=nurses,TW=TW, splits=splits)
+"""a = Feasibility(nurses=nurses,TW=TW, splits=splits)
 
 testziz = a[0]
 excost = 0
@@ -58,4 +60,4 @@ for i in testziz:
 print(trc)
 print(resourcecost)
 print(veichles)
-print(time)
+print(time)"""

@@ -35,8 +35,8 @@ def Split(instance,permutation):
     pred = {}
     rt = permutation
     a = rt.copy()
-    for i in a:
-        pred[i] = []
+    """    for i in a:
+        pred[i] = []"""
     p[0] = 0
     for i in a:
         p[i] = np.inf
@@ -49,7 +49,8 @@ def Split(instance,permutation):
         i = idx + 1
         time = 0
         Dist = None
-        while i <= patients and TravelTimeDist.LessThan((TW[0][1] - time)) >= 0.95 and phaseconvo(Dist,TravelTimeDist).Dist().LessThan(TW[a[i]][1]) >= 0.95:
+        Cr = 0
+        while i <= patients and TravelTimeDist.LessThan((TW[0][1] - time)) >= 0.95 and phaseconvo(Dist,TravelTimeDist).Dist().LessThan(TW[a[i]][1]) >= 0.95 and Cr <= -math.log(0.90):
             time += TravelTimeDist.sample() + ServiceTimeDist.sample()
             if time > TW[a[i]][1]:
                 time = time
@@ -68,37 +69,30 @@ def Split(instance,permutation):
                     cost = cost + TravelTimeDist.GreaterThan(lop)*2*Costmat[0][a[i]]
             if p[a[idx]] + cost + Costmat[a[i]][0] < p[a[i]]:
                 p[a[i]] = p[a[idx]] + cost + Costmat[a[i]][0]
-                pred[a[i]].append(a[idx])
+                pred[a[i]] = a[idx]
+            Cr += -math.log(phaseconvo(Dist,TravelTimeDist).Dist().LessThan(TW[a[i]][1]))
+            print(Cr , "<=" , -math.log(0.90))
             i += 1
 
 
+    #E = [dict(zip(pred.keys(), a)) for a in itertools.product(*pred.values())]
 
-    E = [dict(zip(pred.keys(), a)) for a in itertools.product(*pred.values())]
 
-    z = []
-    for i in E:
-        s = []
-        j = patients
-        while j != 0:
-            trip = []
-            for k in a[a.index(i[a[j]]) + 1:j + 1]:
-                trip.append(k)
-            s.insert(0,trip)
-            j = a.index(i[a[j]])
-        z.append(s)
-    temp = []
-    for i in z:
-        if i in temp:
-            pass
-        else:
-            temp.append(i)
-    print(p)
-    return temp
+    s = []
+    j = patients
+    while j != 0:
+        trip = []
+        for k in a[a.index(pred[a[j]]) + 1:j + 1]:
+            trip.append(k)
+        s.insert(0,trip)
+        j = a.index(pred[a[j]])
+        cost = p[list(p)[-1]]
+    return [s],p,cost
 
 
 def Feasibility(nurses,TW, splits):
     Dist = None
-    temp = splits.copy()
+    temp = splits[0].copy()
     for route in temp:
         P = []
         tempsis = route.copy()
