@@ -12,10 +12,10 @@ import time
 import math
 nurses,patients,TW = reader('A7')
 starttimer = time.time()
-temp = Split('A7',[5,4,3,8,9,7,2,1,6,10])
+temp = Split('A7',[3,4,5,8,7,9,2,1,6,10])
 Dist = None
 P = []
-for i in temp[0]:
+for i in temp[1]:
     i.append(0)
     i.insert(0,0)
     p = []
