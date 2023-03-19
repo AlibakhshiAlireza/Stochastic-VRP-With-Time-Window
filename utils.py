@@ -92,6 +92,7 @@ def Split(instance,permutation):
             pass
         else:
             temp.append(i)
+    print(p)
     return temp
 
 

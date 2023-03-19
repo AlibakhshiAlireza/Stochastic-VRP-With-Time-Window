@@ -23,8 +23,8 @@ excost = 0
 resourcecost = 0
 trc = 0
 veichles = len(testziz)
-time = 0
 for i in testziz:
+    time = 0
     for idx,j in enumerate(i):
         if idx == 0:
             trc += Costmat[0][i[idx + 1]]
