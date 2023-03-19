@@ -11,31 +11,51 @@ from butools.fitting import *
 import time
 import math
 nurses,patients,TW = reader('A7')
+Costmat = matcord(rcord('A7'))
 starttimer = time.time()
-temp = Split('A7',[3,4,5,8,7,9,2,1,6,10])
-Dist = None
-P = []
-for i in temp[1]:
-    i.append(0)
-    i.insert(0,0)
-    p = []
-    for index,j in enumerate(i):
-        if j == 0:
-            Dist = TravelTimeDist
-            x1 = TravelTimeDist.LessThan(TW[0][1])
-            p.append(x1)
-        elif index == (len(i) - 2):
-            Dist = phaseconvo(Dist,TravelTimeDist).Dist()
-            Dist = phaseconvo(Dist,ServiceTimeDist).Dist()
-            x2 = Dist.LessThan(TW[0][1])
-            p.append(x2)
-        elif index == (len(i) - 1):
+permutation = list(range(1,patients+1))
+shuffle(permutation)
+splits = Split('A7',permutation=permutation)
+a = Feasibility(nurses=nurses,TW=TW, splits=splits)
+
+testziz = a[0]
+excost = 0
+resourcecost = 0
+trc = 0
+veichles = len(testziz)
+time = 0
+for i in testziz:
+    for idx,j in enumerate(i):
+        if idx == 0:
+            trc += Costmat[0][i[idx + 1]]
+            if TW[i[idx + 1]][1] - time >= 0:
+                resourcecost += (TravelTimeDist.GreaterThan((TW[i[idx + 1]][1] - time))*2*(Costmat[0][i[idx + 1]]))
+            else:
+                resourcecost += (TravelTimeDist.GreaterThan(0)*2*(Costmat[0][i[idx + 1]]))
+            time = TravelTimeDist.sample()
+            if time >= TW[i[idx + 1]][1]:
+                time = time
+            else:
+                time = TW[i[idx + 1]][1]
+        elif idx == (len(i) - 2):
+            trc += Costmat[i[idx]][0]
+            time += TravelTimeDist.sample() + ServiceTimeDist.sample()
+        elif idx == (len(i) - 1):
             pass
         else:
-            Dist = phaseconvo(Dist,TravelTimeDist).Dist()
-            Dist = phaseconvo(Dist,ServiceTimeDist).Dist()
-            x3 = Dist.LessThan(TW[i[index+1]][1])
-            p.append(x3)
-    P.append(math.prod(p))
+            trc += Costmat[i[idx]][i[idx + 1]]
+            time += ServiceTimeDist.sample()
+            if TW[i[idx + 1]][1] - time >= 0:
+                resourcecost += (TravelTimeDist.GreaterThan((TW[i[idx + 1]][1] - time))*2*(Costmat[i[idx]][0]))
+            else:
+                resourcecost += (TravelTimeDist.GreaterThan(0)*2*(Costmat[i[idx]][0]))
+            time += TravelTimeDist.sample()
+            if time >= TW[i[idx + 1]][1]:
+                time = time
+            else:
+                time = TW[i[idx + 1]][1]
 
-print(math.prod(P))
+print(trc)
+print(resourcecost)
+print(veichles)
+print(time)

@@ -5,6 +5,7 @@ from reader import *
 import random
 from tqdm import tqdm
 import itertools
+import math
 
 def interleave_zeros(lst):
     new_list = []
@@ -50,6 +51,10 @@ def Split(instance,permutation):
         Dist = None
         while i <= patients and TravelTimeDist.LessThan((TW[0][1] - time)) >= 0.95 and phaseconvo(Dist,TravelTimeDist).Dist().LessThan(TW[a[i]][1]) >= 0.95:
             time += TravelTimeDist.sample() + ServiceTimeDist.sample()
+            if time > TW[a[i]][1]:
+                time = time
+            else:
+                time = TW[a[i]][1]
             Dist = phaseconvo(Dist,TravelTimeDist).Dist()
             Dist = phaseconvo(Dist,ServiceTimeDist).Dist()
             if i == t + 1:
@@ -90,3 +95,37 @@ def Split(instance,permutation):
     return temp
 
 
+def Feasibility(nurses,TW, splits):
+    Dist = None
+    temp = splits.copy()
+    for route in temp:
+        P = []
+        tempsis = route.copy()
+        for i in tempsis:
+            i.append(0)
+            i.insert(0,0)
+            p = []
+            for index,j in enumerate(i):
+                if j == 0:
+                    Dist = TravelTimeDist
+                    x1 = TravelTimeDist.LessThan(TW[0][1])
+                    p.append(x1)
+                elif index == (len(i) - 2):
+                    Dist = phaseconvo(Dist,TravelTimeDist).Dist()
+                    Dist = phaseconvo(Dist,ServiceTimeDist).Dist()
+                    x2 = Dist.LessThan(TW[0][1])
+                    p.append(x2)
+                elif index == (len(i) - 1):
+                    pass
+                else:
+                    Dist = phaseconvo(Dist,TravelTimeDist).Dist()
+                    Dist = phaseconvo(Dist,ServiceTimeDist).Dist()
+                    x3 = Dist.LessThan(TW[i[index+1]][1])
+                    p.append(x3)
+            P.append(math.prod(p))
+        print(math.prod(P))
+        if math.prod(P) >= 0.90:
+            pass
+        else:
+            splits.remove(route)
+    return splits
