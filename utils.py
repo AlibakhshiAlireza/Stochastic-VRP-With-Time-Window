@@ -35,8 +35,6 @@ def Split(instance,permutation):
     pred = {}
     rt = permutation
     a = rt.copy()
-    """    for i in a:
-        pred[i] = []"""
     p[0] = 0
     for i in a:
         p[i] = np.inf
@@ -71,7 +69,7 @@ def Split(instance,permutation):
                 p[a[i]] = p[a[idx]] + cost + Costmat[a[i]][0]
                 pred[a[i]] = a[idx]
             Cr += -math.log(phaseconvo(Dist,TravelTimeDist).Dist().LessThan(TW[a[i]][1]))
-            print(Cr , "<=" , -math.log(0.90))
+            #print(Cr , "<=" , -math.log(0.90))
             i += 1
 
 
