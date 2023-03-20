@@ -19,7 +19,7 @@ splits = Split('C7',permutation=permutation)
 print(splits[2])
 a = Feasibility(nurses=nurses,TW=TW, splits=splits)
 """a = Feasibility(nurses=nurses,TW=TW, splits=splits)
-
+hi
 testziz = a[0]
 excost = 0
 resourcecost = 0
