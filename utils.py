@@ -62,11 +62,11 @@ def Split(instance,permutation):
                 cost = cost + Costmat[a[i-1]][a[i]]
                 lop = TW[a[i]][1] - time
                 if lop < 0:
-                    cost = cost + 2*Costmat[0][a[i]]
+                    cost = cost + 2*Costmat[0][a[i]] + 1000
                 else:
-                    cost = cost + TravelTimeDist.GreaterThan(lop)*2*Costmat[0][a[i]]
-            if p[a[idx]] + cost + Costmat[a[i]][0] < p[a[i]]:
-                p[a[i]] = p[a[idx]] + cost + Costmat[a[i]][0]
+                    cost = cost + TravelTimeDist.GreaterThan(lop)*((2*Costmat[0][a[i]]) + 1000)
+            if p[a[idx]] + cost + Costmat[a[i]][0] + 1000 < p[a[i]]:
+                p[a[i]] = p[a[idx]] + cost + Costmat[a[i]][0] + 1000
                 pred[a[i]] = a[idx]
             Cr += -math.log(phaseconvo(Dist,TravelTimeDist).Dist().LessThan(TW[a[i]][1]))
             #print(Cr , "<=" , -math.log(0.90))

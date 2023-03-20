@@ -11,6 +11,7 @@ from butools.ph import *
 from butools.fitting import *
 import time
 import math
+import tqdm
 nurses,patients,TW = reader('A7')
 Costmat = matcord(rcord('A7'))
 # Placeholder functions for fitness function and initial population
@@ -76,9 +77,19 @@ def two_opt(solution):
     new_solution = solution[:i] + list(reversed(solution[i:j+1])) + solution[j+1:]
     return new_solution
 
+def mutation(solution, mutation_rate = 0.1):
+    # create a copy of the solution
+    mutated_solution = solution.copy()
+    # iterate over each bit in the solution
+    for i in range(len(solution)):
+        # with a certain probability, flip the bit
+        if random.random() < mutation_rate:
+            mutated_solution[i] = 1 - solution[i]
+    return mutated_solution
 
 def local_search(solution):
     neighborhoods = [or_opt, two_opt]
+    shuffle(neighborhoods)
     current_solution = solution
     moves_left = 3 # set the maximum number of movements to 3
     while moves_left > 0:
@@ -102,7 +113,7 @@ def local_search(solution):
 
 
 # Memetic algorithm with variable neighborhood search
-def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_prob, mutation_prob, tournament_size):
+def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_prob, tournament_size):
     # Generate initial population
     population = initial_population(pop_size)
 
@@ -125,6 +136,7 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
             parent2 = tournament_selection(population, tournament_size)
             offspring = ox(parent1, parent2)
             population.append(offspring)
+        
 
         # Remove least fit individuals from population
         num_to_remove = len(population) - pop_size
@@ -141,6 +153,6 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
 
 # Run memetic algorithm
 start_time = time.time()
-best_solution = memetic_algorithm(pop_size=10, num_generations=2, local_search_prob=0.1, crossover_prob=0.8, mutation_prob=0.1, tournament_size=2)
+best_solution = memetic_algorithm(pop_size=30, num_generations=5, local_search_prob=0.1, crossover_prob=0.2,tournament_size=4)
 print('Best solution: %s' % best_solution[0])
 print('Best solution fitness: %s' % best_solution[1])
