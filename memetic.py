@@ -77,21 +77,32 @@ def two_opt(solution):
     new_solution = solution[:i] + list(reversed(solution[i:j+1])) + solution[j+1:]
     return new_solution
 
-def mutation(solution, mutation_rate = 0.1):
-    # create a copy of the solution
+import random
+
+def scramble_mutation(solution, mutation_rate):
+    # Copy the original solution
     mutated_solution = solution.copy()
-    # iterate over each bit in the solution
-    for i in range(len(solution)):
-        # with a certain probability, flip the bit
-        if random.random() < mutation_rate:
-            mutated_solution[i] = 1 - solution[i]
+
+    # Determine the subset of genes to scramble
+    subset_size = int(len(solution) * mutation_rate)
+    start_index = random.randint(0, len(solution) - subset_size)
+    end_index = start_index + subset_size
+
+    # Scramble the subset of genes
+    subset = mutated_solution[start_index:end_index]
+    random.shuffle(subset)
+
+    # Update the mutated solution with the scrambled subset
+    mutated_solution[start_index:end_index] = subset
+
     return mutated_solution
+
 
 def local_search(solution):
     neighborhoods = [or_opt, two_opt]
     shuffle(neighborhoods)
     current_solution = solution
-    moves_left = 3 # set the maximum number of movements to 3
+    moves_left = 10 # set the maximum number of movements to 3
     while moves_left > 0:
         best_neighbor = None
         best_fitness = fitness(current_solution)
@@ -113,7 +124,7 @@ def local_search(solution):
 
 
 # Memetic algorithm with variable neighborhood search
-def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_prob, tournament_size):
+def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_prob,mut_prob, tournament_size):
     # Generate initial population
     population = initial_population(pop_size)
 
@@ -126,9 +137,6 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
         population_fitness.sort(key=lambda x: x[1], reverse=True)
         population = [p[0] for p in population_fitness]
 
-        # Apply local search to a subset of the population
-        for i in range(int(local_search_prob * pop_size)):
-            population[i] = local_search(population[i])
 
         # Apply crossover using OX operator to a subset of the population
         for i in range(int(crossover_prob * pop_size)):
@@ -136,7 +144,15 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
             parent2 = tournament_selection(population, tournament_size)
             offspring = ox(parent1, parent2)
             population.append(offspring)
+        #apply mutation
+        for i in range(int(mut_prob * pop_size)):
+            parent = tournament_selection(population, tournament_size)
+            offspring = scramble_mutation(parent, 0.3)
+            population.append(offspring)
         
+        # Apply local search to a subset of the population
+        for i in range(int(local_search_prob * pop_size)):
+            population[i] = local_search(population[i])
 
         # Remove least fit individuals from population
         num_to_remove = len(population) - pop_size
@@ -153,6 +169,6 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
 
 # Run memetic algorithm
 start_time = time.time()
-best_solution = memetic_algorithm(pop_size=30, num_generations=5, local_search_prob=0.1, crossover_prob=0.2,tournament_size=4)
+best_solution = memetic_algorithm(pop_size=50, num_generations=8, local_search_prob=0.2, crossover_prob=0.7,mut_prob=0.1,tournament_size=2)
 print('Best solution: %s' % best_solution[0])
 print('Best solution fitness: %s' % best_solution[1])
