@@ -12,6 +12,7 @@ from butools.fitting import *
 import time
 import math
 import tqdm
+import matplotlib.pyplot as plt
 nurses,patients,TW = reader('A7')
 Costmat = matcord(rcord('A7'))
 # Placeholder functions for fitness function and initial population
@@ -125,6 +126,10 @@ def local_search(solution):
 
 # Memetic algorithm with variable neighborhood search
 def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_prob,mut_prob, tournament_size):
+    Gen = []
+    BG = []
+    BO = []
+    BS = []
     # Generate initial population
     population = initial_population(pop_size)
 
@@ -160,15 +165,34 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
             population_fitness = list(zip(population, fitness_scores))
             population_fitness.sort(key=lambda x: x[1],reverse=True)
             population = [p[0] for p in population_fitness[num_to_remove:]]
+        print('Generation %s: %s' % (generation, population_fitness[0][1]))
+        Gen.append(generation)
+        BG.append(population_fitness[0][1])
+        if BO == []:
+            BO.append(population_fitness[0][1])
+            BS.append(population_fitness[0][0])
+        else:
+            if population_fitness[0][1] < BO[-1]:
+                BO.append(population_fitness[0][1])
+                BS.append(population_fitness[0][0])
+            else:
+                BO.append(BO[-1])
+                BS.append(BS[-1])
 
     # Return best solution
     fitness_scores = [fitness(solution) for solution in population]
     population_fitness = list(zip(population, fitness_scores))
     population_fitness.sort(key=lambda x: x[1])
-    return population_fitness[0][0] , population_fitness[0][1]
+    return Gen , BG , BO , BS
 
 # Run memetic algorithm
 start_time = time.time()
-best_solution = memetic_algorithm(pop_size=50, num_generations=8, local_search_prob=0.2, crossover_prob=0.7,mut_prob=0.1,tournament_size=2)
-print('Best solution: %s' % best_solution[0])
-print('Best solution fitness: %s' % best_solution[1])
+best_solution = memetic_algorithm(pop_size=10, num_generations=20, local_search_prob=0.2, crossover_prob=0.5,mut_prob=0.1,tournament_size=2)
+print('Best solution: %s' % best_solution[3][-1])
+print('Best solution fitness: %s' % best_solution[2][-1])
+plt.plot(best_solution[0],best_solution[1],'r-')
+plt.plot(best_solution[0],best_solution[2] , 'g-')
+plt.xlabel('Generation')
+plt.ylabel('Best Fitness')
+plt.ioff()
+plt.show()
