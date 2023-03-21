@@ -13,6 +13,7 @@ import time
 import math
 import tqdm
 import matplotlib.pyplot as plt
+from initpop import *
 nurses,patients,TW = reader('A7')
 Costmat = matcord(rcord('A7'))
 # Placeholder functions for fitness function and initial population
@@ -21,9 +22,12 @@ def fitness(solution):
     return a[2]
 
 def initial_population(pop_size):
+    first = savings('A7')
+    second = CHRISTOFIDES('A7')
+    third = PCA('A7')
     a = list(range(1,patients+1))
-    pop = []
-    for i in range(pop_size + 1):
+    pop = [first,second,third]
+    for i in range(pop_size - 3  + 1):
         pop.append(random.sample(a, len(a)))
     return pop
 
@@ -130,6 +134,7 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
     BG = []
     BO = []
     BS = []
+    MP = []
     # Generate initial population
     population = initial_population(pop_size)
 
@@ -168,6 +173,8 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
         print('Generation %s: %s' % (generation, population_fitness[0][1]))
         Gen.append(generation)
         BG.append(population_fitness[0][1])
+        #get mean of population fitness
+        MP.append(sum(fitness_scores)/len(fitness_scores))
         if BO == []:
             BO.append(population_fitness[0][1])
             BS.append(population_fitness[0][0])
@@ -183,14 +190,15 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
     fitness_scores = [fitness(solution) for solution in population]
     population_fitness = list(zip(population, fitness_scores))
     population_fitness.sort(key=lambda x: x[1])
-    return Gen , BG , BO , BS
+    return Gen , BG , BO , BS , MP
 
 # Run memetic algorithm
+np.random.seed(random.randint(0,1000))
 start_time = time.time()
 best_solution = memetic_algorithm(pop_size=10, num_generations=20, local_search_prob=0.2, crossover_prob=0.5,mut_prob=0.1,tournament_size=2)
 print('Best solution: %s' % best_solution[3][-1])
 print('Best solution fitness: %s' % best_solution[2][-1])
-plt.plot(best_solution[0],best_solution[1],'r-')
+plt.plot(best_solution[0],best_solution[-1],'r-')
 plt.plot(best_solution[0],best_solution[2] , 'g-')
 plt.xlabel('Generation')
 plt.ylabel('Best Fitness')
