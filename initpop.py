@@ -2,11 +2,11 @@ from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 import numpy as np
 from reader import *
-def create_data_model():
+def create_data_model(instance):
     """Stores the data for the problem."""
     data = {}
-    data['time_matrix'] = np.loadtxt("tsttm.txt",dtype=int,delimiter=",")
-    a = reader('A7')
+    data['time_matrix'] = np.loadtxt("Problem/"+instance+"I.txt",dtype=int,delimiter=",")
+    a = reader(instance)
     data['time_windows'] = []
     for i in a[2]:
         data['time_windows'].append((a[2][i][0],a[2][i][1]))
@@ -15,11 +15,11 @@ def create_data_model():
     return data
 
 
-def print_solution(data, manager, routing, solution):
+def print_solution(data, manager, routing, solution,instance):
     """Prints solution on console."""
     time_dimension = routing.GetDimensionOrDie('Time')
     total_time = 0
-    with open('solution1.txt', 'w') as f:
+    with open('initsols/'+instance+'SAVINGS.txt', 'w') as f:
         for vehicle_id in range(data['num_vehicles']):
             index = routing.Start(vehicle_id)
             plan_output = ""
@@ -38,18 +38,18 @@ def print_solution(data, manager, routing, solution):
             else:
                 f.write(plan_output[2:-1])
             total_time += solution.Min(time_var)
-    with open('solution1.txt', 'r') as f:
+    with open('initsols/'+instance+'SAVINGS.txt', 'r') as f:
         temp = f.read()
         temp = temp[:-1]
-    with open('solution1.txt', 'w') as f:
+    with open('initsols/'+instance+'SAVINGS.txt', 'w') as f:
         f.write(temp)
     
 
 
-def main():
+def main(instance):
     """Solve the VRP with time windows."""
     # Instantiate the data problem.
-    data = create_data_model()
+    data = create_data_model(instance)
 
     # Create the routing index manager.
     manager = pywrapcp.RoutingIndexManager(len(data['time_matrix']),data['num_vehicles'], data['depot'])
@@ -110,12 +110,14 @@ def main():
 
     # Print solution on console.
     if solution:
-        print_solution(data, manager, routing, solution)
-    with open('solution1.txt', 'r') as f:
+        print_solution(data, manager, routing, solution,instance)
+    with open('initsols/'+instance+'SAVINGS.txt', 'r') as f:
         temp = f.read()
         a = temp.split('-')
     p = [int(x) for x in a]
     return p
 
 if __name__ == '__main__':
-    main()
+    main(instance='C7')
+    a = np.loadtxt("initsols/C7SAVINGS.txt",dtype=int,delimiter="-")
+    print(len(a))
