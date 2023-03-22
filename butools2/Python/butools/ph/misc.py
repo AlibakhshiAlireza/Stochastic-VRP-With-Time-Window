@@ -41,7 +41,7 @@ def SamplesFromPH (a,A,k):
 
     if butools.checkInput and not CheckPHRepresentation(a,A):
         raise Exception("SamplesFromPH: input is not a valid PH representation!")
-
+    np.random.seed(7)
     # auxilary variables
     a = a.A.flatten()
     N = len(a)

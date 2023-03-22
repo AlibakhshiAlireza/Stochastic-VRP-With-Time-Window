@@ -167,21 +167,22 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
         # Remove least fit individuals from population
         num_to_remove = len(population) - pop_size
         if num_to_remove > 0:
+            #fitness_scores = [fitness(solution) for solution in population]
             population_fitness = list(zip(population, fitness_scores))
             population_fitness.sort(key=lambda x: x[1],reverse=True)
             population = [p[0] for p in population_fitness[num_to_remove:]]
-        print('Generation %s: %s' % (generation, population_fitness[0][1]))
+        print('Generation %s: %s' % (generation, population_fitness[-1][1]))
         Gen.append(generation)
-        BG.append(population_fitness[0][1])
+        BG.append(population_fitness[-1][1])
         #get mean of population fitness
         MP.append(sum(fitness_scores)/len(fitness_scores))
         if BO == []:
-            BO.append(population_fitness[0][1])
-            BS.append(population_fitness[0][0])
+            BO.append(population_fitness[-1][1])
+            BS.append(population_fitness[-1][0])
         else:
-            if population_fitness[0][1] < BO[-1]:
-                BO.append(population_fitness[0][1])
-                BS.append(population_fitness[0][0])
+            if population_fitness[-1][1] < BO[-1]:
+                BO.append(population_fitness[-1][1])
+                BS.append(population_fitness[-1][0])
             else:
                 BO.append(BO[-1])
                 BS.append(BS[-1])
@@ -195,7 +196,7 @@ def memetic_algorithm(pop_size, num_generations, local_search_prob, crossover_pr
 # Run memetic algorithm
 np.random.seed(random.randint(0,1000))
 start_time = time.time()
-best_solution = memetic_algorithm(pop_size=10, num_generations=20, local_search_prob=0.2, crossover_prob=0.5,mut_prob=0.1,tournament_size=2)
+best_solution = memetic_algorithm(pop_size=10, num_generations=20, local_search_prob=0.2, crossover_prob=0.4,mut_prob=0.1,tournament_size=3)
 print('Best solution: %s' % best_solution[3][-1])
 print('Best solution fitness: %s' % best_solution[2][-1])
 plt.plot(best_solution[0],best_solution[-1],'r-')
