@@ -14,17 +14,17 @@ import math
 import tqdm
 import matplotlib.pyplot as plt
 from initpop import *
-nurses,patients,TW = reader('A6')
-Costmat = matcord(rcord('A6'))
+nurses,patients,TW = reader('B5')
+Costmat = matcord(rcord('B5'))
 # Placeholder functions for fitness function and initial population
 def fitness(solution):
-    a = Split('A6',permutation=solution)
+    a = Split('B5',permutation=solution)
     return a[2]
 
 def initial_population(pop_size):
-    first = savings('A6')
-    second = CHRISTOFIDES('A6')
-    third = PCA('A6')
+    first = savings('B5')
+    second = CHRISTOFIDES('B5')
+    third = PCA('B5')
     a = list(range(1,patients+1))
     pop = [first,second,third]
     pop = [i for i in pop if i != None]
@@ -203,7 +203,7 @@ print('Best solution: %s' % best_solution[3][-1])
 print('Best solution fitness: %s' % best_solution[2][-1])
 plt.plot(best_solution[0],best_solution[-1],'r-')
 plt.plot(best_solution[0],best_solution[2] , 'g-')
-with open('Soloutions\A6.txt','w') as f:
+with open('Soloutions\B5.txt','w') as f:
     for item in best_solution:
         f.write(",".join(str(x) for x in item) + "\n")
 plt.xlabel('Generation')
