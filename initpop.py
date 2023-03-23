@@ -9,8 +9,8 @@ def create_data_model(instance):
     a = reader(instance)
     data['time_windows'] = []
     for i in a[2]:
-        data['time_windows'].append((a[2][i][0],a[2][i][1]))
-    data['num_vehicles'] = a[0]
+        data['time_windows'].append((int(a[2][i][0]/60),int(a[2][i][1]/60)))
+    data['num_vehicles'] = 10
     data['depot'] = 0
     return data
 
@@ -75,8 +75,8 @@ def savings(instance):
     time = 'Time'
     routing.AddDimension(
         transit_callback_index,
-        30000,  # allow waiting time
-        30000,  # maximum time per vehicle
+        1000000,  # allow waiting time
+        1000000,  # maximum time per vehicle
         False,  # Don't force start cumul to zero.
         time)
     time_dimension = routing.GetDimensionOrDie(time)
@@ -111,10 +111,13 @@ def savings(instance):
     # Print solution on console.
     if solution:
         print_solution(data, manager, routing, solution,instance,method='SAVINGS')
-    with open('initsols/'+instance+'SAVINGS.txt', 'r') as f:
-        temp = f.read()
-        a = temp.split('-')
-    p = [int(x) for x in a]
+        with open('initsols/'+instance+'SAVINGS.txt', 'r') as f:
+            temp = f.read()
+            a = temp.split('-')
+        p = [int(x) for x in a]
+    else:
+        print('No solution found !')
+        p = []
     return p
 
 def CHRISTOFIDES(instance):
@@ -147,7 +150,7 @@ def CHRISTOFIDES(instance):
     routing.AddDimension(
         transit_callback_index,
         30000,  # allow waiting time
-        30000,  # maximum time per vehicle
+        300000,  # maximum time per vehicle
         False,  # Don't force start cumul to zero.
         time)
     time_dimension = routing.GetDimensionOrDie(time)
@@ -182,10 +185,13 @@ def CHRISTOFIDES(instance):
     # Print solution on console.
     if solution:
         print_solution(data, manager, routing, solution,instance,method='CHRISTOFIDES')
-    with open('initsols/'+instance+'CHRISTOFIDES.txt', 'r') as f:
-        temp = f.read()
-        a = temp.split('-')
-    p = [int(x) for x in a]
+        with open('initsols/'+instance+'CHRISTOFIDES.txt', 'r') as f:
+            temp = f.read()
+            a = temp.split('-')
+        p = [int(x) for x in a]
+    else:
+        print('No solution found !')
+        p = []
     return p
 
 def PCA(instance):
@@ -217,8 +223,8 @@ def PCA(instance):
     time = 'Time'
     routing.AddDimension(
         transit_callback_index,
-        30000,  # allow waiting time
-        30000,  # maximum time per vehicle
+        1000000,  # allow waiting time
+        1000000,  # maximum time per vehicle
         False,  # Don't force start cumul to zero.
         time)
     time_dimension = routing.GetDimensionOrDie(time)
@@ -245,7 +251,7 @@ def PCA(instance):
 
     # Setting first solution heuristic.
     search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-    search_parameters.first_solution_strategy = (routing_enums_pb2.FirstSolutionStrategy.BEST_INSERTION)
+    search_parameters.first_solution_strategy = (routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC)
     search_parameters.local_search_metaheuristic = (
         routing_enums_pb2.LocalSearchMetaheuristic.GREEDY_DESCENT)
 
@@ -262,6 +268,4 @@ def PCA(instance):
     return p
 
 if __name__ == '__main__':
-    PCA(instance='A7')
-    a = np.loadtxt("initsols/C7SAVINGS.txt",dtype=int,delimiter="-")
-    print(len(a))
+    print(CHRISTOFIDES(instance='A1'))
