@@ -117,7 +117,7 @@ def savings(instance):
         p = [int(x) for x in a]
     else:
         print('No solution found !')
-        p = []
+        p = None
     return p
 
 def CHRISTOFIDES(instance):
@@ -191,7 +191,7 @@ def CHRISTOFIDES(instance):
         p = [int(x) for x in a]
     else:
         print('No solution found !')
-        p = []
+        p = None
     return p
 
 def PCA(instance):
@@ -261,11 +261,14 @@ def PCA(instance):
     # Print solution on console.
     if solution:
         print_solution(data, manager, routing, solution,instance,method='PCA')
-    with open('initsols/'+instance+'PCA.txt', 'r') as f:
-        temp = f.read()
-        a = temp.split('-')
-    p = [int(x) for x in a]
+        with open('initsols/'+instance+'PCA.txt', 'r') as f:
+            temp = f.read()
+            a = temp.split('-')
+        p = [int(x) for x in a]
+    else:
+        print('No solution found !')
+        p = None
     return p
 
 if __name__ == '__main__':
-    print(CHRISTOFIDES(instance='A1'))
+    print(savings(instance='A4'))
