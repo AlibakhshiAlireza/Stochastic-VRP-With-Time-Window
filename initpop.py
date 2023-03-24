@@ -10,7 +10,7 @@ def create_data_model(instance):
     data['time_windows'] = []
     for i in a[2]:
         data['time_windows'].append((int(a[2][i][0]/60),int(a[2][i][1]/60)))
-    data['num_vehicles'] = 25
+    data['num_vehicles'] = 50
     data['depot'] = 0
     return data
 
