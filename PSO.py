@@ -63,14 +63,14 @@ class PSO(object):
                 # Update population with probability 0.5
                 if random.random() < 0.5:
                     population[i] = new_position
-        Gen.append(_)
-        BG.append(global_best_fitness)
-        BO.append(global_best)
-        BS.append(personal_best_fitness)
-        MP.append(sum(personal_best_fitness)/len(personal_best_fitness))
-        print("Iteration:", _)
-        print("Global best:", global_best)
-        print("Global best fitness:", global_best_fitness)
+            Gen.append(_)
+            BG.append(global_best_fitness)
+            BO.append(global_best)
+            BS.append(personal_best_fitness)
+            MP.append(sum(personal_best_fitness)/len(personal_best_fitness))
+            print("Iteration:", _)
+            print("Global best:", global_best)
+            print("Global best fitness:", global_best_fitness)
 
         return global_best, global_best_fitness
 
