@@ -66,21 +66,25 @@ class PSO(object):
             Gen.append(_)
             BG.append(global_best_fitness)
             BO.append(global_best)
-            BS.append(personal_best_fitness)
             MP.append(sum(personal_best_fitness)/len(personal_best_fitness))
             print("Iteration:", _)
             print("Global best:", global_best)
             print("Global best fitness:", global_best_fitness)
 
-        return global_best, global_best_fitness
+        return MP,BG,Gen,BO
+    
+if __name__ == "__main__":
+    # Parameters
+    n = 10  # Length of the list
+    population_size = 25
+    max_iter = 20
+    ins = ['A1','A2','A3','A4','A5','A6','A7','B1','B2','B3','B4','B5','B6','B7','C1','C2','C3','C4','C5','C6','C7']
+    for i in ins:
+        print(i)
+        PS1 = PSO(i)
+        # Perform the optimization using discrete PSO
+        best_solution = PS1.discrete_pso(population_size, max_iter)
+        with open('PSOSOL\\'+i+'.txt','w') as f:
+            for item in best_solution:
+                f.write(",".join(str(x) for x in item) + "\n")
 
-# Parameters
-n = 10  # Length of the list
-population_size = 25
-max_iter = 20
-PS1 = PSO('A1')
-# Perform the optimization using discrete PSO
-optimal_permutation, min_fitness = PS1.discrete_pso(population_size, max_iter)
-
-print("Optimal permutation:", optimal_permutation)
-print("Minimum fitness:", min_fitness)
