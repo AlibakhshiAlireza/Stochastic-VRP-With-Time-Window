@@ -23,7 +23,23 @@ class PSO(object):
 
     def generate_initial_population(self,pop_size):
         a = list(range(1,self.patients+1))
-        pop = []
+        try:
+            chris = np.loadtxt('initsols/'+self.instance+'CHRISTOFIDES.txt',dtype=int,delimiter='-')
+            chris = [int(i) for i in chris]
+        except:
+            chris = None
+        try:
+            pca = np.loadtxt('initsols/'+self.instance+'PCA.txt',dtype=int,delimiter='-')
+            pca = [int(i) for i in pca]
+        except:
+            pca = None
+        try:
+            savings = np.loadtxt('initsols/' +self.instance+ 'SAVINGS.txt',dtype=int,delimiter='-')
+            savings = [int(i) for i in savings]
+        except:
+            savings = None
+        lis = [chris,pca,savings]
+        pop = [i for i in lis if i != None]
         for i in range(pop_size - len(pop)  + 1):
             pop.append(random.sample(a, len(a)))
         return pop
@@ -78,7 +94,7 @@ if __name__ == "__main__":
     n = 10  # Length of the list
     population_size = 25
     max_iter = 20
-    ins = ['A1','A2','A3','A4','A5','A6','A7','B1','B2','B3','B4','B5','B6','B7','C1','C2','C3','C4','C5','C6','C7']
+    ins = ['B2','B3','B4','B5','B6','B7','C1','C2','C3','C4','C5','C6','C7']
     for i in ins:
         print(i)
         PS1 = PSO(i)
