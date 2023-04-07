@@ -58,7 +58,7 @@ class PSO(object):
         global_best = min(personal_best, key=fitness_function)
         global_best_fitness = fitness_function(global_best)
         generation = 1
-        while global_best_fitness > 5488.060258:
+        while (global_best_fitness > 5488.060258) and (generation < 50):
             for i in range(population_size):
                 new_position = self.mutate_position(population[i], n)
                 new_fitness = fitness_function(new_position)
@@ -91,6 +91,5 @@ if __name__ == '__main__':
         print(i)
         best_solution = PPSO.discrete_pso(int(i[0]))
         with open('Tiguchi\PSOAns.txt','a') as f:
-            f.write(str(best_solution))
-        print('number of iterations: %s' % best_solution[0])
-        print('Ans: %s' % best_solution[1])
+            #write best solution to f and go to next line
+            f.write(str(best_solution) + '\n')

@@ -91,11 +91,12 @@ class PSO(object):
     
 if __name__ == "__main__":
     # Parameters
-    n = 10  # Length of the list
     population_size = 25
     max_iter = 20
-    ins = ['B2','B3','B4','B5','B6','B7','C1','C2','C3','C4','C5','C6','C7']
+    ins = ['A1','A2','A3','A4','A5','A6','A7','B1','B2','B3','B4','B5','B6','B7','C1','C2','C3','C4','C5','C6','C7']
+    Dik = {"A":10,"B":25,"C":50}
     for i in ins:
+        n = Dik[i[0]]
         print(i)
         PS1 = PSO(i)
         # Perform the optimization using discrete PSO

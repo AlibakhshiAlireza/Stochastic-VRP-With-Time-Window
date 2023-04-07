@@ -202,16 +202,14 @@ if __name__ == '__main__':
     # Run memetic algorithm
     #np.random.seed(random.randint(0,1000))
     start_time = time.time()
-    mma = MA('A1')
-    best_solution = mma.memetic_algorithm(pop_size=25, num_generations=20, local_search_prob=0.1, crossover_prob=0.7,mut_prob=0.2,tournament_size=3)
-    print('Best solution: %s' % best_solution[3][-1])
-    print('Best solution fitness: %s' % best_solution[2][-1])
-    plt.plot(best_solution[0],best_solution[-1],'r-')
-    plt.plot(best_solution[0],best_solution[2] , 'g-')
-    with open('Soloutions\\'+mma.instance+'.txt','w') as f:
-        for item in best_solution:
-            f.write(",".join(str(x) for x in item) + "\n")
-    plt.xlabel('Generation')
-    plt.ylabel('Best Fitness')
-    plt.ioff()
-    plt.show()
+    ins = ['A1','A2','A3','A4','A5','A6','A7','B1','B2','B3','B4','B5','B6','B7','C1','C2','C3','C4','C5','C6','C7']
+    for i in ins:
+        mma = MA(i)
+        best_solution = mma.memetic_algorithm(pop_size=15, num_generations=20, local_search_prob=0.3, crossover_prob=0.6,mut_prob=0.1,tournament_size=3)
+        print('Best solution: %s' % best_solution[3][-1])
+        print('Best solution fitness: %s' % best_solution[2][-1])
+        plt.plot(best_solution[0],best_solution[-1],'r-')
+        plt.plot(best_solution[0],best_solution[2] , 'g-')
+        with open('Soloutions\\'+mma.instance+'.txt','w') as f:
+            for item in best_solution:
+                f.write(",".join(str(x) for x in item) + "\n")
