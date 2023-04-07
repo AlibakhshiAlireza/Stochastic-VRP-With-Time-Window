@@ -9,11 +9,6 @@ sys.path.append('butools2/Python')
 sys.path.append('MPMAVRPMain/butools2/Python')
 from butools.ph import *
 from butools.fitting import *
-import time
-import math
-import tqdm
-import matplotlib.pyplot as plt
-from initpop import *
 class MA(object):
     def __init__(self,instance):
         self.instance = instance
@@ -25,12 +20,24 @@ class MA(object):
         return a[2]
 
     def initial_population(self,pop_size):
-        first = savings(self.instance)
-        second = CHRISTOFIDES(self.instance)
-        third = PCA(self.instance)
         a = list(range(1,self.patients+1))
-        pop = [first,second,third]
-        pop = [i for i in pop if i != None]
+        try:
+            chris = np.loadtxt('initsols/'+self.instance+'CHRISTOFIDES.txt',dtype=int,delimiter='-')
+            chris = [int(i) for i in chris]
+        except:
+            chris = None
+        try:
+            pca = np.loadtxt('initsols/'+self.instance+'PCA.txt',dtype=int,delimiter='-')
+            pca = [int(i) for i in pca]
+        except:
+            pca = None
+        try:
+            savings = np.loadtxt('initsols/' +self.instance+ 'SAVINGS.txt',dtype=int,delimiter='-')
+            savings = [int(i) for i in savings]
+        except:
+            savings = None
+        lis = [chris,pca,savings]
+        pop = [i for i in lis if i != None]
         for i in range(pop_size - len(pop)  + 1):
             pop.append(random.sample(a, len(a)))
         return pop
@@ -201,15 +208,13 @@ class MA(object):
 if __name__ == '__main__':
     # Run memetic algorithm
     #np.random.seed(random.randint(0,1000))
-    start_time = time.time()
-    ins = ['A1','A2','A3','A4','A5','A6','A7','B1','B2','B3','B4','B5','B6','B7','C1','C2','C3','C4','C5','C6','C7']
+    ins = ['B7','C1','C2','C3','C4','C5','C6','C7']
     for i in ins:
+        print(i)
         mma = MA(i)
         best_solution = mma.memetic_algorithm(pop_size=15, num_generations=20, local_search_prob=0.3, crossover_prob=0.6,mut_prob=0.1,tournament_size=3)
         print('Best solution: %s' % best_solution[3][-1])
         print('Best solution fitness: %s' % best_solution[2][-1])
-        plt.plot(best_solution[0],best_solution[-1],'r-')
-        plt.plot(best_solution[0],best_solution[2] , 'g-')
         with open('Soloutions\\'+mma.instance+'.txt','w') as f:
             for item in best_solution:
                 f.write(",".join(str(x) for x in item) + "\n")
