@@ -208,7 +208,7 @@ class MA(object):
 if __name__ == '__main__':
     # Run memetic algorithm
     #np.random.seed(random.randint(0,1000))
-    ins = ['B7','C1','C2','C3','C4','C5','C6','C7']
+    ins = ['C1','C2','C3','C4','C5','C6','C7']
     for i in ins:
         print(i)
         mma = MA(i)
