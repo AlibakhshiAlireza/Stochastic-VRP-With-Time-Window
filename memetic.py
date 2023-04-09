@@ -212,7 +212,7 @@ if __name__ == '__main__':
     for i in ins:
         print(i)
         mma = MA(i)
-        best_solution = mma.memetic_algorithm(pop_size=15, num_generations=20, local_search_prob=0.3, crossover_prob=0.6,mut_prob=0.1,tournament_size=3)
+        best_solution = mma.memetic_algorithm(pop_size=15, num_generations=20, local_search_prob=0.1, crossover_prob=0.6,mut_prob=0.3,tournament_size=4)
         print('Best solution: %s' % best_solution[3][-1])
         print('Best solution fitness: %s' % best_solution[2][-1])
         with open('Soloutions\\'+mma.instance+'.txt','w') as f:

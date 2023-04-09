@@ -77,7 +77,7 @@ class PSO(object):
                         global_best_fitness = new_fitness
 
                 # Update population with probability 0.5
-                if random.random() < 0.5:
+                if random.random() < 0.7:
                     population[i] = new_position
             Gen.append(_)
             BG.append(global_best_fitness)

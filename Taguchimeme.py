@@ -134,16 +134,11 @@ class MA(object):
 
     # Memetic algorithm with variable neighborhood search
     def memetic_algorithm(self,pop_size, local_search_prob, crossover_prob,mut_prob, tournament_size):
-        Gen = []
-        BG = []
-        BO = []
-        BS = []
-        MP = []
         # Generate initial population
         population = self.initial_population(pop_size)
         Ans = np.inf
-        generation = 1
-        while Ans > 5413.601631:
+        num_generations = 20
+        for generation in range(num_generations):
             # Evaluate fitness of population
             fitness_scores = [self.fitness(solution) for solution in population]
 
@@ -178,23 +173,24 @@ class MA(object):
                 population_fitness.sort(key=lambda x: x[1],reverse=True)
                 population = [p[0] for p in population_fitness[num_to_remove:]]
             print('Generation %s: %s' % (generation, population_fitness[-1][1]))
-            generation += 1
             Ans = population_fitness[-1][1]
 
         # Return best solution
         fitness_scores = [self.fitness(solution) for solution in population]
         population_fitness = list(zip(population, fitness_scores))
         population_fitness.sort(key=lambda x: x[1])
-        return generation
+        return Ans
     
 if __name__ == '__main__':
     # Run memetic algorithm
     #np.random.seed(random.randint(0,1000))
     DOE = np.loadtxt('Tiguchi\MemeticDOE.txt',delimiter=',')
     mma = MA('A1')
-    for i in DOE:
-        print(i)
-        best_solution = mma.memetic_algorithm(pop_size=int(i[0]), local_search_prob=i[1], crossover_prob=i[2],mut_prob=1-(i[1]+i[2]),tournament_size=int(i[3]))
-        with open('Tiguchi\MemeticAns.txt','a') as f:
-            f.write(str(best_solution)+'\n')
-        print('number of iterations: %s' % best_solution)
+    for index,i in enumerate(DOE):
+        for j in range(5):
+            firs = time.time()
+            print(i)
+            best_solution = mma.memetic_algorithm(pop_size=int(i[0]), local_search_prob=i[1], crossover_prob=i[2],mut_prob=1-(i[1]+i[2]),tournament_size=int(i[3]))
+            with open('Tiguchi\MemeticAns.txt','a') as f:
+                f.write(str(time.time() - firs)+","+ str(index)+"," + str(best_solution)+'\n')
+            print('fitness: %s' % best_solution)
